@@ -123,7 +123,7 @@
                         console.log("Path: ", path);
                         removeTiles(selectedItem, currentItem);
                     } else {
-                        selectedItem = null;
+                        selectedItem = currentItem;
                         currentItem = null;
                     }
                 } else {
