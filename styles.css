@@ -30,6 +30,7 @@ h1 {
     width: calc((var(--tile-size) + var(--tile-space)) * var(--board-width) - var(--tile-space));
     height: calc((var(--tile-size) + var(--tile-space)) * var(--board-height) - var(--tile-space));
     padding: var(--tile-space);
+    background-color: skyblue;
 }
 
 .tile {
@@ -55,6 +56,7 @@ h1 {
 }
 .tile.empty {
     opacity: 0;
+    cursor: default;
 }
 
 #restartButton {

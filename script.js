@@ -3,6 +3,7 @@
     let gameBoard;
     let selectedItem;
     let currentItem;
+    let movePath;
 
     function getTileState(row, col) {
         let isSelected = false;
@@ -22,12 +23,6 @@
         return {isSelected, isMoving, remove};
     }
 
-    function getAnimationDuration() {
-        let dr = currentItem.row - selectedItem.row;
-        let dc = currentItem.col - selectedItem.col;
-        return ((Math.abs(dr) + Math.abs(dc)) * 0.05) + 's';
-    }
-
     function update() {
         for (let row = 0; row < pm.BOARD_HEIGHT; row++) {
             for (let col = 0; col < pm.BOARD_WIDTH; col++) {
@@ -41,18 +36,16 @@
                 }
                 if (isMoving) {
                     tile.element.classList.add('moving');
-                    let dr = currentItem.row - selectedItem.row;
-                    let dc = currentItem.col - selectedItem.col;
-                    tile.element.style.animationName = pm.getFrame(dr, dc);
-                    tile.element.style.animationDuration = getAnimationDuration();
-                    tile.element.style.transitionDelay = getAnimationDuration();
+                    tile.element.style.animationName = pm.getAnimationName(movePath);
+                    tile.element.style.animationDuration = pm.getAnimationDuration(movePath);
+                    tile.element.style.transitionDelay = pm.getAnimationDuration(movePath);
                 } else {
                     tile.element.classList.remove('moving');
                     tile.element.style.animationName = null;
                 }
                 if (remove) {
                     tile.element.classList.add('will-remove');
-                    tile.element.style.transitionDelay = getAnimationDuration();
+                    tile.element.style.transitionDelay = pm.getAnimationDuration(movePath);
                 }
                 if (tile.isEmpty) {
                     tile.element.classList.add('empty');
@@ -117,13 +110,14 @@
                 currentItem = null;
             } else {
                 if (selectedItem && selectedItem.val === item.val) {
-                    currentItem = item;
-                    const path = pm.findPath(tiles, selectedItem, currentItem);
+                    const path = pm.findPath(tiles, selectedItem, item);
                     if (path) {
+                        currentItem = item;
+                        movePath = path;
                         console.log("Path: ", path);
                         removeTiles(selectedItem, currentItem);
                     } else {
-                        selectedItem = currentItem;
+                        selectedItem = item;
                         currentItem = null;
                     }
                 } else {

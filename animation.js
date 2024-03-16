@@ -1,5 +1,52 @@
 (function (pm) {
     const frames = [];
+    const styles = {};
+
+    function getAnimationName(path) {
+        const name = `move-path-${path.direction}-${path.steps.join('-')}`;
+        if (!styles[name]) {
+            generateFrameStyle(name, path);
+        }
+        return name;
+    }
+
+    function generateFrameStyle(name, path) {
+        const style = document.createElement("style");
+        style.type = 'text/css';
+        style.innerHTML = generateFrameContent(name, path);
+        document.head.appendChild(style);
+        styles[name] = style;
+    }
+
+    function generateFrameContent(name, path) {
+        const length = getLength(path);
+        let horizontal = path.direction === 'left' || path.direction === 'right';
+        let x = 0, y = 0, step = 0;
+        let content = `@keyframes ${name} {\n`;
+        content += `  0% { transform: translate(${x}px, ${y}px) }\n`;
+        for (let i = 0; i < path.steps.length; i++) {
+            const s = path.steps[i];
+            step += Math.abs(s);
+            if (horizontal) {
+                x += s * (pm.TILE_SIZE + pm.TILE_SPACING);
+            } else {
+                y += s * (pm.TILE_SIZE + pm.TILE_SPACING);
+            }
+            horizontal = !horizontal;
+            const stepPercent = Math.floor(step / length * 100, 2);
+            content += `  ${stepPercent}% { transform: translate(${x}px, ${y}px) }\n`;
+        }
+        content += "}\n";
+        return content;
+    }
+
+    function getLength(path) {
+        return path.steps.reduce((a, b) => a + Math.abs(b), 0);
+    }
+
+    function getAnimationDuration(path) {
+        return getLength(path) * 0.05 + 's';
+    }
 
     function getFrame(row, col) {
         if (!frames[row]) {
@@ -42,4 +89,6 @@
     }
 
     pm.getFrame = getFrame;
+    pm.getAnimationName = getAnimationName;
+    pm.getAnimationDuration = getAnimationDuration;
 }).call(null,window.__pm = window.__pm || {});
