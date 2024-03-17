@@ -4,6 +4,7 @@
     let restartButton;
     let paused;
     let gameOver;
+    let win;
 
     function getTileState(row, col, selectedItem, targetItem) {
         let isSelected = false;
@@ -60,6 +61,7 @@
 
         paused = document.getElementById("paused");
         gameOver = document.getElementById("game-over");
+        win = document.getElementById("win");
     }
 
     function updateState() {
@@ -71,6 +73,7 @@
                 pauseButton.disabled = false;
                 paused.style.visibility = 'hidden';
                 gameOver.style.visibility = 'hidden';
+                win.style.visibility = 'hidden';
                 break;
             case 'paused':
                 pauseButton.innerText = '继续游戏';
@@ -78,6 +81,7 @@
                 pauseButton.disabled = false;
                 paused.style.visibility = 'visible';
                 gameOver.style.visibility = 'hidden';
+                win.style.visibility = 'hidden';
                 break;
             case 'over':
                 pauseButton.innerText = '暂停游戏';
@@ -85,6 +89,15 @@
                 pauseButton.disabled = true;
                 paused.style.visibility = 'hidden';
                 gameOver.style.visibility = 'visible';
+                win.style.visibility = 'hidden';
+                break;
+            case 'win':
+                pauseButton.innerText = '暂停游戏';
+                pauseButton.classList.add('disabled');
+                pauseButton.disabled = true;
+                paused.style.visibility = 'hidden';
+                gameOver.style.visibility = 'hidden';
+                win.style.visibility = 'visible';
                 break;
         }
     }

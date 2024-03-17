@@ -8,6 +8,21 @@
         pm.tiles[item1.row][item1.col].isEmpty = true;
         pm.tiles[item2.row][item2.col].isEmpty = true;
         pm.onElimination();
+        if (checkWin()) {
+            pm.pauseTimer();
+            pm.state = 'win';
+            pm.updateState();
+        }
+    }
+
+    function checkWin() {
+        for (let i = 0; i < pm.tiles.length; i++) {
+            const row = pm.tiles[i];
+            for (let j = 0; j < row.length; j++) {
+                if (!row[j].isEmpty) return false;
+            }
+        }
+        return true;
     }
 
     function clickTile(row, col) {
