@@ -22,7 +22,6 @@ body {
 }
 
 .game-container {
-    position: relative;
     text-align: center;
 }
 
@@ -51,9 +50,7 @@ h1 {
 
 .game-board {
     position: relative;
-    width: calc((var(--tile-size) + var(--tile-space)) * var(--board-width) + var(--tile-space));
-    height: calc((var(--tile-size) + var(--tile-space)) * var(--board-height) + var(--tile-space));
-    padding: var(--tile-space);
+    padding: 5px;
     background-color: skyblue;
 }
 
@@ -122,19 +119,4 @@ h1 {
     left: 0;
     width: 100%;
     transition: bottom 0.3s linear;
-}
-
-@media screen and (max-width: 760px) {
-    .game-container {
-        transform: scale(0.5);
-    }
-}
-
-@media screen and (max-height: 657px) {
-    .game-container {
-        transform: scale(0.6);
-    }
-    .footer {
-        bottom: -33px;
-    }
 }

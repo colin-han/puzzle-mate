@@ -1,10 +1,16 @@
 (function (pm) {
+    let container;
     let gameBoard;
     let pauseButton;
     let restartButton;
     let paused;
     let gameOver;
     let win;
+
+    let boardWidth;
+    let boardHeight;
+    let containerHeight;
+    let containerWidth;
 
     function getTileState(row, col, selectedItem, targetItem) {
         let isSelected = false;
@@ -49,9 +55,34 @@
         }
     }
 
+    let resizeHandle;
+    function onResize() {
+        if (resizeHandle) clearTimeout(resizeHandle);
+        resizeHandle = setTimeout(() => {
+            updateScale();
+            resizeHandle = undefined;
+        }, 1000);
+    }
+    function updateScale() {
+        const screenWidth = document.body.offsetWidth - 40 /* padding */;
+        const screenHeight = document.body.offsetHeight - 40 /* padding */ - 33; /* footer height */
+        const ratio = Math.min(screenWidth / containerWidth, screenHeight / containerHeight);
+        container.style.transform = `scale(${ratio})`
+    }
+
     function initView() {
+        boardWidth = pm.BOARD_WIDTH * (pm.TILE_SIZE + pm.TILE_SPACING) + pm.TILE_SPACING;
+        boardHeight = pm.BOARD_HEIGHT * (pm.TILE_SIZE + pm.TILE_SPACING) + pm.TILE_SPACING;
+        containerHeight = boardHeight + 132;
+        containerWidth = boardWidth;
+
+        container = document.getElementById('container');
+        updateScale();
+
         gameBoard = document.getElementById('gameBoard');
         gameBoard.addEventListener('click', handleTileClick);
+        gameBoard.style.width = boardWidth + "px";
+        gameBoard.style.height = boardHeight + 'px';
 
         restartButton = document.getElementById("restartButton");
         restartButton.addEventListener('click', pm.restartGame);
@@ -62,6 +93,8 @@
         paused = document.getElementById("paused");
         gameOver = document.getElementById("game-over");
         win = document.getElementById("win");
+
+        window.addEventListener('resize', onResize);
     }
 
     function updateState() {
