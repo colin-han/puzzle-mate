@@ -12,10 +12,11 @@
     let containerHeight;
     let containerWidth;
 
-    function getTileState(row, col, selectedItem, targetItem) {
+    function getTileState(row, col, selectedItem, targetItem, highlights) {
         let isSelected = false;
         let isMoving = false;
         let remove = false;
+        let highlight = false;
         if (selectedItem && selectedItem.row === row && selectedItem.col === col) {
             isSelected = true;
             if (targetItem) {
@@ -27,7 +28,15 @@
             isSelected = true;
             remove = true;
         }
-        return {isSelected, isMoving, remove};
+        if (highlights) {
+            for (let i = 0; i < highlights.length; i++) {
+                if (highlights[i].row === row && highlights[i].col === col) {
+                    highlight = true;
+                    break;
+                }
+            }
+        }
+        return {isSelected, isMoving, remove, highlight};
     }
 
     function findParentWithClass(element, className) {
@@ -83,6 +92,9 @@
         gameBoard.addEventListener('click', handleTileClick);
         gameBoard.style.width = boardWidth + "px";
         gameBoard.style.height = boardHeight + 'px';
+
+        helpButton = document.getElementById("helpButton");
+        helpButton.addEventListener('click', pm.help);
 
         restartButton = document.getElementById("restartButton");
         restartButton.addEventListener('click', pm.restartGame);
@@ -156,11 +168,11 @@
         }
     }
 
-    function updateBoard(selectItem, targetItem, movePath) {
+    function updateBoard(selectItem, targetItem, movePath, highlights) {
         for (let row = 0; row < pm.BOARD_HEIGHT; row++) {
             for (let col = 0; col < pm.BOARD_WIDTH; col++) {
                 const tile = pm.tiles[row][col];
-                let {isSelected, isMoving, remove} = getTileState(row, col, selectItem, targetItem);
+                let {isSelected, isMoving, remove, highlight} = getTileState(row, col, selectItem, targetItem, highlights);
 
                 if (isSelected) {
                     tile.element.classList.add('selected');
@@ -182,6 +194,11 @@
                 }
                 if (tile.isEmpty) {
                     tile.element.classList.add('empty');
+                }
+                if (highlight) {
+                    tile.element.classList.add('highlight');
+                } else {
+                    tile.element.classList.remove('highlight');
                 }
             }
         }

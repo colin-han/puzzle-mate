@@ -84,9 +84,38 @@
         pm.updateState();
     }
 
+    function help() {
+        let highlights;
+        const count = pm.BOARD_HEIGHT * pm.BOARD_WIDTH;
+        for (let i = 0; i < count; i++) {
+            const a = {
+                row: Math.floor(i / pm.BOARD_WIDTH),
+                col: i % pm.BOARD_WIDTH
+            };
+            let aTile = pm.tiles[a.row][a.col];
+            if (aTile.isEmpty) continue;
+
+            for (let j = i + 1; j < count; j++) {
+                const b = {
+                    row: Math.floor(j / pm.BOARD_WIDTH),
+                    col: j % pm.BOARD_WIDTH
+                };
+                let bTile = pm.tiles[b.row][b.col];
+                if (bTile.isEmpty || bTile.value !== aTile.value) continue;
+
+                const path = pm.findPath(pm.tiles, a, b);
+                if (path) {
+                    highlights = [a, b];
+                }
+            }
+        }
+        pm.updateBoard(selectedItem, null, null, highlights);
+    }
+
     pm.initGame = initGame;
     pm.pauseGame = pauseGame;
     pm.restartGame = restartGame;
     pm.gameOver = gameOver;
     pm.clickTile = clickTile;
+    pm.help = help;
 }).call(null, window.__pm = window.__pm || {})
