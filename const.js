@@ -4,4 +4,11 @@
     pm.TILE_MAX_TYPE = 24;
     pm.TILE_SIZE = 47; // 单元图片大小
     pm.TILE_SPACING = 5;
-}).call(null,window.__pm = window.__pm || {});
+
+    if (window.location.search) {
+        const params = new URLSearchParams(window.location.search);
+        pm.BOARD_HEIGHT = params.get('rows') || pm.BOARD_HEIGHT;
+        pm.BOARD_WIDTH = params.get('cols') || pm.BOARD_WIDTH;
+        pm.TILE_MAX_TYPE = params.get('types') || pm.TILE_MAX_TYPE;
+    }
+}).call(null, window.__pm = window.__pm || {});
