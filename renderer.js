@@ -107,6 +107,13 @@
         win = document.getElementById("win");
 
         window.addEventListener('resize', onResize);
+        window.addEventListener('keypress', (e) => {
+            switch (e.key.toLowerCase()) {
+                case 'h': pm.help(); break;
+                case 'r': pm.restartGame(); break;
+                case 'p': pm.pauseGame(); break;
+            }
+        });
     }
 
     function updateState() {

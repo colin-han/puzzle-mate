@@ -12,17 +12,57 @@
             pm.pauseTimer();
             pm.state = 'win';
             pm.updateState();
+        } else if (!findPossible()) {
+            alert("没有可以消除的水果了，将会重新摆放水果！")
+            reorder(0);
+        }
+    }
+
+    function countTile() {
+        let count = 0;
+        for (let i = 0; i < pm.BOARD_HEIGHT; i++) {
+            for (let j = 0; j < pm.BOARD_WIDTH; j++) {
+                if (!pm.tiles[i][j].isEmpty) count++;
+            }
+        }
+        return count;
+    }
+    function getAllTiles() {
+        let all = [];
+        for (let i = 0; i < pm.BOARD_HEIGHT; i++) {
+            for (let j = 0; j < pm.BOARD_WIDTH; j++) {
+                if (!pm.tiles[i][j].isEmpty) all.push(pm.tiles[i][j]);
+            }
+        }
+        return all;
+    }
+    function reorder(c) {
+        if (c > 10) {
+            alert("游戏无法进行了！即将重置游戏。")
+            pm.restartGame();
+            return;
+        }
+        const allTiles = getAllTiles();
+        const count = allTiles.length;
+        for (let i = 0; i < count / 2; i++) {
+            const a = Math.floor(Math.random() * count);
+            const b = Math.floor(Math.random() * count);
+            if (a !== b) {
+                const t = allTiles[a].value;
+                allTiles[a].value = allTiles[b].value;
+                allTiles[b].value = t;
+            }
+        }
+        if (!findPossible()) {
+            reorder(c + 1);
+        } else {
+            pm.resetBoard();
+            pm.updateBoard(selectedItem, currentItem, movePath);
         }
     }
 
     function checkWin() {
-        for (let i = 0; i < pm.tiles.length; i++) {
-            const row = pm.tiles[i];
-            for (let j = 0; j < row.length; j++) {
-                if (!row[j].isEmpty) return false;
-            }
-        }
-        return true;
+        return !countTile()
     }
 
     function clickTile(row, col) {
@@ -84,7 +124,7 @@
         pm.updateState();
     }
 
-    function help() {
+    function findPossible() {
         let highlights;
         const count = pm.BOARD_HEIGHT * pm.BOARD_WIDTH;
         for (let i = 0; i < count; i++) {
@@ -109,6 +149,11 @@
                 }
             }
         }
+        return highlights;
+    }
+
+    function help() {
+        let highlights = findPossible();
         pm.updateBoard(selectedItem, null, null, highlights);
     }
 
