@@ -1,5 +1,9 @@
 (function (pm) {
     let gameBoard;
+    let pauseButton;
+    let restartButton;
+    let paused;
+    let gameOver;
 
     function getTileState(row, col, selectedItem, targetItem) {
         let isSelected = false;
@@ -44,9 +48,49 @@
         }
     }
 
-    function initBoard() {
+    function initView() {
         gameBoard = document.getElementById('gameBoard');
         gameBoard.addEventListener('click', handleTileClick);
+
+        restartButton = document.getElementById("restartButton");
+        restartButton.addEventListener('click', pm.restartGame);
+
+        pauseButton = document.getElementById('pauseButton');
+        pauseButton.addEventListener('click', pm.pauseGame);
+
+        paused = document.getElementById("paused");
+        gameOver = document.getElementById("game-over");
+    }
+
+    function updateState() {
+        switch (pm.state) {
+            case 'init':
+            case 'run':
+                pauseButton.innerText = '暂停游戏';
+                pauseButton.classList.remove('disabled');
+                pauseButton.disabled = false;
+                paused.style.visibility = 'hidden';
+                gameOver.style.visibility = 'hidden';
+                break;
+            case 'paused':
+                pauseButton.innerText = '继续游戏';
+                pauseButton.classList.remove('disabled');
+                pauseButton.disabled = false;
+                paused.style.visibility = 'visible';
+                gameOver.style.visibility = 'hidden';
+                break;
+            case 'over':
+                pauseButton.innerText = '暂停游戏';
+                pauseButton.classList.add('disabled');
+                pauseButton.disabled = true;
+                paused.style.visibility = 'hidden';
+                gameOver.style.visibility = 'visible';
+                break;
+        }
+    }
+
+    function resetBoard() {
+        gameBoard.innerHTML = "";
 
         for (let row = 0; row < pm.BOARD_HEIGHT; row++) {
             for (let col = 0; col < pm.BOARD_WIDTH; col++) {
@@ -97,6 +141,8 @@
         }
     }
 
-    pm.initBoard = initBoard;
+    pm.initView = initView;
+    pm.resetBoard = resetBoard;
     pm.updateBoard = updateBoard;
-}).call(null,window.__pm = window.__pm || {});
+    pm.updateState = updateState;
+}).call(null, window.__pm = window.__pm || {});

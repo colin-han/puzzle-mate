@@ -1,5 +1,7 @@
 (function (pm) {
     let timerBar;
+    let interval;
+    let paused = false;
 
     // 更新计时条宽度
     function updateTimerBar() {
@@ -13,7 +15,9 @@
         timerBar = document.getElementById('timer-bar');
 
         updateTimerBar();
-        const interval = setInterval(function () {
+        interval = setInterval(function () {
+            if (paused) return;
+
             pm.timer--;
             updateTimerBar();
             if (pm.timer <= 0) {
@@ -22,6 +26,14 @@
                 pm.gameOver();
             }
         }, 1000); // 每秒更新一次计时器
+    }
+
+    function pause() {
+        paused = true;
+    }
+
+    function resume() {
+        paused = false;
     }
 
     // 模拟消除一堆棋子并增加计时器
@@ -34,5 +46,7 @@
     }
 
     pm.startTimer = startTimer;
+    pm.pauseTimer = pause;
+    pm.resumeTimer = resume;
     pm.onElimination = onElimination;
 }).call(null, window.__pm = window.__pm || {});

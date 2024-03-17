@@ -10,13 +10,24 @@
 <div class="game-container">
     <h1>连连看游戏</h1>
     <div id="timer-bar"></div>
-    <div class="game-board" id="gameBoard">
-        <!-- 游戏面板将动态生成 -->
+    <div class="play-area">
+        <div class="game-board" id="gameBoard">
+            <!-- 游戏面板将动态生成 -->
+        </div>
+        <div class="game-over overlay" id="game-over">
+            Game Over!
+        </div>
+        <div class="paused overlay" id="paused">
+            Paused
+        </div>
     </div>
-    <button id="restartButton">重新开始</button>
+    <div class="actions">
+        <button class="button" id="restartButton">重新开始</button>
+        <button class="button" id="pauseButton">暂停游戏</button>
+    </div>
 </div>
 <script src="const.js"></script>
-<script src="board-init.js"></script>
+<script src="init-tiles.js"></script>
 <script src="find-path.js"></script>
 <script src="animation.js"></script>
 <script src="timer.js"></script>

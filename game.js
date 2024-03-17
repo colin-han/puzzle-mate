@@ -1,5 +1,5 @@
 (function (pm) {
-    pm.state = 'init'; // 'init' | 'run' | 'pause' | 'over';
+    pm.state = 'init'; // 'init' | 'run' | 'paused' | 'over';
     let selectedItem;
     let currentItem;
     let movePath;
@@ -40,6 +40,7 @@
     }
 
     function initGame() {
+        pm.initView();
         restartGame();
     }
 
@@ -47,14 +48,28 @@
         pm.state = 'run';
         pm.tiles = pm.initTiles(pm.BOARD_HEIGHT, pm.BOARD_WIDTH, pm.TILE_MAX_TYPE)
         pm.startTimer();
-        pm.initBoard()
+        pm.resetBoard();
+        pm.updateState();
     }
 
     function gameOver() {
         pm.state = 'over';
+        pm.updateState();
+    }
+
+    function pauseGame() {
+        if (pm.state === 'paused') {
+            pm.resumeTimer();
+            pm.state = 'run';
+        } else {
+            pm.pauseTimer();
+            pm.state = 'paused';
+        }
+        pm.updateState();
     }
 
     pm.initGame = initGame;
+    pm.pauseGame = pauseGame;
     pm.restartGame = restartGame;
     pm.gameOver = gameOver;
     pm.clickTile = clickTile;

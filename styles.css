@@ -5,6 +5,10 @@
     --board-height: 10;
 }
 
+* {
+    box-sizing: border-box;
+}
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -14,6 +18,7 @@ body {
     align-items: center;
     height: 100vh;
     background-color: #f0f0f0;
+    box-sizing: border-box;
 }
 
 .game-container {
@@ -25,11 +30,29 @@ h1 {
     font-size: 24px;
 }
 
-.game-board {
+.play-area {
     position: relative;
     margin-top: 20px;
-    width: calc((var(--tile-size) + var(--tile-space)) * var(--board-width) - var(--tile-space));
-    height: calc((var(--tile-size) + var(--tile-space)) * var(--board-height) - var(--tile-space));
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    padding-top: 80px;
+    background-color: rgb(133 206 239 / 66%);
+    color: #d85e01;
+    font-size: 72px;
+    font-weight: bold;
+    text-shadow: #d85e01a8 2px 2px 16px;
+}
+
+.game-board {
+    position: relative;
+    width: calc((var(--tile-size) + var(--tile-space)) * var(--board-width) + var(--tile-space));
+    height: calc((var(--tile-size) + var(--tile-space)) * var(--board-height) + var(--tile-space));
     padding: var(--tile-space);
     background-color: skyblue;
 }
@@ -60,16 +83,23 @@ h1 {
     cursor: default;
 }
 
-#restartButton {
+.button {
     margin-top: 20px;
     padding: 10px 20px;
     font-size: 16px;
-    background-color: #007bff;
     color: #fff;
+    background-color: #007bff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
+}
+.button.disabled {
+    opacity: 0.6;
+}
+
+#restartButton {
+    background-color: #007bff;
 }
 
 #restartButton:hover {
