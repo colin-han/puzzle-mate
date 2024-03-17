@@ -9,10 +9,17 @@
         timerBar.style.width = widthPercentage + '%';
     }
 
+    function initTimer() {
+        timerBar = document.getElementById('timer-bar');
+    }
+
     // 开始计时器
     function startTimer() {
         pm.timer = 90; // 初始计时器设置为90秒
-        timerBar = document.getElementById('timer-bar');
+        if (interval) {
+            clearInterval(interval);
+            interval = null;
+        }
 
         updateTimerBar();
         interval = setInterval(function () {
@@ -22,6 +29,7 @@
             updateTimerBar();
             if (pm.timer <= 0) {
                 clearInterval(interval);
+                interval = null;
                 // 游戏结束逻辑
                 pm.gameOver();
             }
@@ -45,6 +53,7 @@
         updateTimerBar();
     }
 
+    pm.initTimer = initTimer;
     pm.startTimer = startTimer;
     pm.pauseTimer = pause;
     pm.resumeTimer = resume;

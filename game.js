@@ -41,6 +41,7 @@
 
     function initGame() {
         pm.initView();
+        pm.initTimer();
         restartGame();
     }
 
