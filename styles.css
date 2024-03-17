@@ -17,6 +17,7 @@ body {
 }
 
 .game-container {
+    position: relative;
     text-align: center;
 }
 
@@ -73,4 +74,14 @@ h1 {
 
 #restartButton:hover {
     background-color: #0056b3;
+}
+
+#timer-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%; /* 计时条占据整个游戏面板宽度 */
+    height: 10px; /* 计时条高度 */
+    background-color: green; /* 初始时计时条颜色 */
+    transition: width 1s linear; /* 过渡效果，宽度每秒逐渐变化 */
 }

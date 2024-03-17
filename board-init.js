@@ -1,5 +1,5 @@
 (function (pm) {
-    function initBoard(rowCount, colCount, maxValue) {
+    function initTiles(rowCount, colCount, maxValue) {
         // 计算每种类型棋子的数量
         const totalTiles = rowCount * colCount;
         const tilesPerType = Math.floor(totalTiles / maxValue);
@@ -50,5 +50,5 @@
         const randomIndex = Math.floor(Math.random() * availableTypes.length);
         return availableTypes[randomIndex];
     }
-    pm.initBoard = initBoard;
+    pm.initTiles = initTiles;
 }).call(null,window.__pm = window.__pm || {});
