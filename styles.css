@@ -115,3 +115,26 @@ h1 {
     background-color: green; /* 初始时计时条颜色 */
     transition: width 1s linear; /* 过渡效果，宽度每秒逐渐变化 */
 }
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    transition: bottom 0.3s linear;
+}
+
+@media screen and (max-width: 760px) {
+    .game-container {
+        transform: scale(0.5);
+    }
+}
+
+@media screen and (max-height: 657px) {
+    .game-container {
+        transform: scale(0.6);
+    }
+    .footer {
+        bottom: -33px;
+    }
+}
