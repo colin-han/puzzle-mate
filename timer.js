@@ -5,7 +5,7 @@
 
     // 更新计时条宽度
     function updateTimerBar() {
-        const widthPercentage = (pm.timer / 90) * 100;
+        const widthPercentage = (pm.timer / pm.MAX_TIME) * 100;
         timerBar.style.width = widthPercentage + '%';
     }
 
@@ -15,7 +15,7 @@
 
     // 开始计时器
     function startTimer() {
-        pm.timer = 90; // 初始计时器设置为90秒
+        pm.timer = pm.MAX_TIME;
         if (interval) {
             clearInterval(interval);
             interval = null;
@@ -47,8 +47,8 @@
     // 模拟消除一堆棋子并增加计时器
     function onElimination() {
         pm.timer += 2; // 每消除一堆棋子，增加2秒计时器
-        if (pm.timer > 90) {
-            pm.timer = 90; // 限制计时器最大值为90秒
+        if (pm.timer > pm.MAX_TIME) {
+            pm.timer = pm.MAX_TIME;
         }
         updateTimerBar();
     }
