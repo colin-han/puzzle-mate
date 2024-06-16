@@ -15,6 +15,7 @@
 
     // 开始计时器
     function startTimer() {
+        paused = false;
         pm.timer = pm.MAX_TIME;
         if (interval) {
             clearInterval(interval);

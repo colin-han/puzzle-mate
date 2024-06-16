@@ -14,7 +14,8 @@
 <div class="game-container" id="container">
     <h1>连连看游戏</h1>
     <div id="timer-bar"></div>
-    <div class="play-area">
+    <div class="level-label">LEVEL <span id="level">1</span></div>
+    <div class="play-area" id="play-area">
         <div class="game-board" id="gameBoard">
             <!-- 游戏面板将动态生成 -->
         </div>
@@ -26,6 +27,7 @@
         </div>
         <div class="overlay" id="win" style="visibility: hidden">
             You WIN!
+            <button class="button" id="next-level">下一级</button>
         </div>
     </div>
     <div class="actions">

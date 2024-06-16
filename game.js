@@ -157,10 +157,17 @@
         pm.updateBoard(selectedItem, null, null, highlights);
     }
 
+    function nextLevel() {
+        pm.LEVEL = (pm.LEVEL + 1) % 3;
+        Object.assign(pm, pm.levels[pm.LEVEL]);
+        pm.restartGame();
+    }
+
     pm.initGame = initGame;
     pm.pauseGame = pauseGame;
     pm.restartGame = restartGame;
     pm.gameOver = gameOver;
     pm.clickTile = clickTile;
+    pm.nextLevel = nextLevel;
     pm.help = help;
 }).call(null, window.__pm = window.__pm || {})

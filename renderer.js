@@ -1,16 +1,17 @@
 (function (pm) {
     let container;
+    let playArea;
     let gameBoard;
     let pauseButton;
     let restartButton;
     let paused;
     let gameOver;
     let win;
+    let level;
+    let nextLevelButton;
 
     let boardWidth;
     let boardHeight;
-    let containerHeight;
-    let containerWidth;
 
     function getTileState(row, col, selectedItem, targetItem, highlights) {
         let isSelected = false;
@@ -64,6 +65,12 @@
         }
     }
 
+    function handleNextLevelClick() {
+        pm.nextLevel();
+        level.innerText = pm.LEVEL + 1;
+        updateScale();
+    }
+
     let resizeHandle;
     function onResize() {
         if (resizeHandle) clearTimeout(resizeHandle);
@@ -72,26 +79,32 @@
             resizeHandle = undefined;
         }, 1000);
     }
+
     function updateScale() {
-        const screenWidth = document.body.offsetWidth - 40 /* padding */;
-        const screenHeight = document.body.offsetHeight - 40 /* padding */ - 33; /* footer height */
-        const ratio = Math.min(screenWidth / containerWidth, screenHeight / containerHeight);
-        container.style.transform = `scale(${ratio})`
+        boardWidth = pm.BOARD_WIDTH * (pm.TILE_SIZE + pm.TILE_SPACING) + pm.TILE_SPACING;
+        boardHeight = pm.BOARD_HEIGHT * (pm.TILE_SIZE + pm.TILE_SPACING) + pm.TILE_SPACING;
+
+        const screenWidth = playArea.offsetWidth - 40 /* padding */;
+        const screenHeight = playArea.offsetHeight - 40 /* padding */;
+        const ratio = Math.min(screenWidth / boardWidth, screenHeight / boardHeight);
+        gameBoard.style.width = boardWidth + "px";
+        gameBoard.style.height = boardHeight + 'px';
+        gameBoard.style.marginLeft = (screenWidth - boardWidth * ratio) / 2 + 'px';
+        gameBoard.style.transform = `scale(${ratio})`
     }
 
     function initView() {
-        boardWidth = pm.BOARD_WIDTH * (pm.TILE_SIZE + pm.TILE_SPACING) + pm.TILE_SPACING;
-        boardHeight = pm.BOARD_HEIGHT * (pm.TILE_SIZE + pm.TILE_SPACING) + pm.TILE_SPACING;
-        containerHeight = boardHeight + 132;
-        containerWidth = boardWidth;
-
         container = document.getElementById('container');
-        updateScale();
+        playArea = document.getElementById('play-area');
+
+        level = document.getElementById('level');
+        level.innerText = pm.LEVEL + 1;
+
+        nextLevelButton = document.getElementById('next-level');
+        nextLevelButton.addEventListener('click', handleNextLevelClick);
 
         gameBoard = document.getElementById('gameBoard');
         gameBoard.addEventListener('click', handleTileClick);
-        gameBoard.style.width = boardWidth + "px";
-        gameBoard.style.height = boardHeight + 'px';
 
         helpButton = document.getElementById("helpButton");
         helpButton.addEventListener('click', pm.help);
@@ -105,6 +118,8 @@
         paused = document.getElementById("paused");
         gameOver = document.getElementById("game-over");
         win = document.getElementById("win");
+
+        updateScale();
 
         window.addEventListener('resize', onResize);
         window.addEventListener('keypress', (e) => {
