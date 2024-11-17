@@ -9,6 +9,12 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
     <link rel="stylesheet" href="styles.css">
+    <script>
+        // 如果当前不是https链接，自动跳转到https连接
+        if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
+            location.href = `https:${location.href.substring(location.protocol.length)}`;
+        }
+    </script>
 </head>
 <body>
 <div class="game-container" id="container">
